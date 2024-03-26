@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import BlogPost from "../../components/BlogPost.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+	const allPosts = await getCollection("posts");
+
+	const uniquwTags = [
+		...new Set(allPosts.map((post) => post.data.tags).flat()),
+	];
+
+	return uniquwTags.map((tag) => {
+		const filterdPosts = allPosts.filter((post) =>
+			post.data.tags?.includes(tag),
+		);
+
+		return {
+			params: { tag: tag },
+			props: { posts: filterdPosts },
+		};
+	});
+}
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout>
+	<p>{tag}タグが追加記事</p>
+	{
+		posts.map((post) => (
+			<BlogPost url={`/posts/${post.slug}`} title={post.data.title} />
+		))
+	}
+</BaseLayout>

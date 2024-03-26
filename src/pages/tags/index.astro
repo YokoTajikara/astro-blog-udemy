@@ -1,0 +1,41 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const pageTitle = "タグ一覧";
+
+const allPosts = await getCollection("posts");
+const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+---
+
+<style>
+	.tags {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		padding-left: 0;
+	}
+
+	a {
+		display: block;
+		margin: 0.25em;
+		border: dotted 1px #333;
+		padding: 0.25em 0.5em;
+		font-size: 1.15em;
+		background-color: #fff;
+		border-radius: 0.25em;
+	}
+</style>
+
+<BaseLayout pageTitle={pageTitle}>
+	<div>
+		<ul class="tags">
+			{
+				tags.map((tag) => (
+					<li>
+						<a href={`/tags/${tag}`}>{tag}</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</BaseLayout>

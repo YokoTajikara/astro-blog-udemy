@@ -1,0 +1,40 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+// 1. frontmatter propによりフロントマターとその他のデータにアクセスできます
+const { frontmatter } = Astro.props;
+---
+
+<style>
+	.tags {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		padding-left: 0;
+	}
+
+	a {
+		display: block;
+		margin: 0.25em;
+		border: dotted 1px #333;
+		padding: 0.25em 0.5em;
+		font-size: 1.15em;
+		background-color: #fff;
+		border-radius: 0.25em;
+	}
+</style>
+<BaseLayout pageTitle={frontmatter.title}>
+	<p>執筆者：{frontmatter.title} {frontmatter.author}著</p>
+	<p>description:<em>{frontmatter.description}</em></p>
+	<slot />
+	<p>投稿日: {frontmatter.date}</p>
+	<div class="tags">
+		{
+			frontmatter.tags.map((tag) => (
+				<p>
+					<a href={`/tags/${tag}`}>{tag}</a>
+				</p>
+			))
+		}
+	</div>
+</BaseLayout>
