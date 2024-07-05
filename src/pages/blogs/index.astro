@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import BlogPost from "../../components/BlogPost.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { preprocess } from "astro/zod";
+
+const pageTitle = "Strapiから取得";
+
+const query = `
+{
+    blogs(pagination: { page: 1, pageSize: 3 },sort: "id:desc")  {
+      data {
+        id
+        attributes {
+          title,
+          content,
+		  thumbnail{
+			data{
+			 attributes{
+			   url,
+			   name
+			 }
+		   }
+		 },
+		  createdAt
+        }
+      },
+	  meta {
+		pagination {
+		  page
+		  pageSize
+		  total
+		  pageCount
+		}
+	  }
+    }
+  }`;
+const url = `${import.meta.env.STRAPI_URL}/graphql`;
+const response = await fetch(url, {
+	// Updated to use import.meta.env
+	method: "POST",
+	headers: {
+		"Content-Type": "application/json",
+	},
+	body: JSON.stringify({
+		query: query,
+	}),
+});
+
+const { data } = await response.json();
+const allBlogs = data.blogs.data;
+console.log(data.blogs.data);
+---
+
+<BaseLayout pageTitle={pageTitle}>
+	<h2>Blogを投稿していきます</h2>
+	<ul>
+		{
+			allBlogs.map((blog) => (
+				<BlogPost
+					url={`/blogs/${blog.id}`}
+					title={blog.attributes.title}
+				/>
+			))
+		}
+	</ul>
+</BaseLayout>

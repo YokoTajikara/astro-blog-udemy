@@ -1,0 +1,15 @@
+---
+import type { GetStaticPaths } from "astro";
+
+export function getStaticPaths() {
+	return [
+		{ params: { blogId: "aaaa" } },
+		{ params: { blogId: "bbbb" } },
+		{ params: { blogId: "cccc" } },
+	];
+}
+---
+
+<main>
+	<h1>Blog Post</h1>
+</main>
