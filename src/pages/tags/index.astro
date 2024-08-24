@@ -28,7 +28,7 @@ const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
 
 <BaseLayout pageTitle={pageTitle}>
 	<div>
-		<ul class="tags test">
+		<ul class="tags">
 			{
 				tags.map((tag) => (
 					<li>
