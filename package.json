@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/preact": "^3.1.1",
     "astro": "^4.5.9",
+    "node-fetch": "^3.3.2",
     "preact": "^10.20.1"
   },
   "devDependencies": {
