@@ -1,0 +1,28 @@
+---
+import fetch from "node-fetch";
+
+// Strapiからデータをフェッチする関数
+async function getBlogs() {
+	const response = await fetch("http://localhost:1337/api/blogs");
+	const data = await response.json();
+	console.log(data);
+	return data.data;
+}
+
+// ページがロードされる時にデータをフェッチ
+const blogs = await getBlogs();
+---
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Blog Posts</title>
+	</head>
+	<body>
+		<h1>Blog Posts</h1>
+		<ul>
+			{blogs.map((blog) => <li>{blog.attributes.title}</li>)}
+		</ul>
+	</body>
+</html>
