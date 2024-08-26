@@ -1,29 +1,16 @@
-name: Rebuild Site
+name: Greetings
 
 on: [pull_request_target, issues]
 
 jobs:
-  build-and-deploy:
+  greeting:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-      - name: Check Node.js version
-        run: node --version
-      - name: Install dependencies
-        run: npm ci
-      - name: Build Astro site
-        run: npm run build
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'us-east-1'   # 使用するリージョンに変更してください
-          SOURCE_DIR: 'dist'        # Astroのビルド出力ディレクトリ
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: "Success!"
+        pr-message: "Thanks Pull Request!"
